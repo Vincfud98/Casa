@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Cantinho ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fce4ec 0%, #bbdefb 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #5a5a7a;
+            --header-color: #e91e63; /* Rosa mais vibrante */
+            --accent-color: #f8bbd0; /* Rosa bebê */
+            --accent-color2: #bbdefb; /* Azul bebê */
+            --shadow-color: rgba(187, 222, 251, 0.5);
+            --heart-color: #ff4d8d;
+            --status-paid: #4caf50; /* Verde para pago */
+            --status-pending: #ffc107; /* Amarelo para pendente */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 200 200'%3E%3Cpath fill='%23ff4d8d' fill-opacity='0.1' d='M42.7,57.3l10,10c4.7-4.7,12.3-4.7,17,0l10-10c-4.7-4.7-12.3-4.7-17,0l-10,10C47.3,69.7,47.3,62,42.7,57.3z'%3E%3C/path%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--heart-color);
+            opacity: 0.5;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+                "header header"
+                "counter1 counter2"
+                "theme theme"
+                "receipts receipts"
+                "bills bills"
+                "notes notes";
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* --- Header --- */
+        .header {
+            grid-area: header;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px var(--shadow-color);
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color2));
+        }
+
+        .header h1 {
+            font-size: 3.2em;
+            font-weight: 700;
+            color: var(--header-color);
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color2));
+            border-radius: 3px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            font-weight: 300;
+            margin: 15px 0 0;
+            color: var(--text-color);
+        }
+
+        /* --- Cards --- */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px 30px;
+            box-shadow: 0 10px 25px -5px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color2));
+            opacity: 0.7;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px var(--shadow-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header .icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color2));
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--header-color);
+        }
+
+        /* --- Cards Específicos --- */
+        .counter-card {
+            text-align: center;
+        }
+        
+        .counter-card#counter1 {
+            grid-area: counter1;
+        }
+        
+        .counter-card#counter2 {
+            grid-area: counter2;
+        }
+        
+        .time-display {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 15px 0 8px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-details {
+            font-size: 1em;
+            font-weight: 400;
+            color: #888;
+            margin: 0;
+            font-style: italic;
+            min-height: 20px;
+        }
+
+        .theme-card {
+            grid-area: theme;
+            text-align: center;
+        }
+        
+        .theme-card .card-header {
+            justify-content: center;
+        }
+        
+        .theme-card p {
+            font-size: 1.3em;
+            line-height: 1.7;
+            padding: 10px;
+            font-style: italic;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .theme-card p::before, .theme-card p::after {
+            content: '"';
+            font-size: 2em;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        /* --- Novo Card de Comprovantes --- */
+        .receipts-card {
+            grid-area: receipts;
+        }
+
+        .drive-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color2));
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+
+        .drive-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            color: white;
+        }
+
+        .drive-link i {
+            margin-right: 10px;
+        }
+
+        /* --- Novo Card de Contas do Mês --- */
+        .bills-card {
+            grid-area: bills;
+        }
+
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .bill-item:last-child {
+            border-bottom: none;
+        }
+
+        .bill-info {
+            flex: 1;
+        }
+
+        .bill-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .bill-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--header-color);
+        }
+
+        .bill-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background-color: var(--status-paid);
+            color: white;
+        }
+
+        .status-pending {
+            background-color: var(--status-pending);
+            color: #333;
+        }
+
+        .notes-card {
+            grid-area: notes;
+        }
+
+        .notes-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notes-card li {
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f1f1;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .notes-card li:hover {
+            background-color: rgba(248, 187, 208, 0.1);
+            border-radius: 8px;
+            padding-left: 10px;
+        }
+        
+        .notes-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .notes-card li::before {
+            content: '❤️';
+            margin-right: 15px;
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .notes-card li:hover::before {
+            transform: scale(1.3);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-color);
+            font-size: 0.9em;
+            opacity: 0.7;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* --- Media Query para Celulares --- */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "counter1"
+                    "counter2"
+                    "theme"
+                    "receipts"
+                    "bills"
+                    "notes";
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .header p {
+                font-size: 1.1em;
+            }
+            
+            .time-display {
+                font-size: 1.5em;
+            }
+            
+            .theme-card p {
+                font-size: 1.1em;
+            }
+            
+            .bill-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .bill-status {
+                margin-top: 10px;
+            }
+        }
+
+        /* --- Animação de pulsação para os contadores --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .counter-card {
+            animation: pulse 5s infinite ease-in-out;
+        }
+        
+        .counter-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-hearts" id="hearts-container"></div>
+
+    <div class="main-container">
+
+        <header class="header">
+            <h1>Nosso Cantinho</h1>
+            <p>O dashboard da nossa vidinha cheia de amor s2</p>
+        </header>
+
+        <div class="card counter-card" id="counter1">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h2>Tempo Juntos</h2>
+            </div>
+            <p class="time-display" id="relationship-display">Calculando...</p>
+            <p class="time-details" id="relationship-details">Calculando detalhes...</p>
+        </div>
+
+        <div class="card counter-card" id="counter2">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h2>Morando Juntos</h2>
+            </div>
+            <p class="time-display" id="living-together-display">Calculando...</p>
+            <p class="time-details" id="living-together-details">Calculando detalhes...</p>
+        </div>
+
+        <div class="card theme-card">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h2>Tema da Semana</h2>
+            </div>
+            <p>Se você fosse um festival, eu acamparia na sua vida só pra te ver todo dia</p>
+        </div>
+
+        <!-- Novo Card de Comprovantes -->
+        <div class="card receipts-card">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <h2>Comprovantes</h2>
+            </div>
+            <p>Aqui estão todos os nossos comprovantes organizadinhos:</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="https://drive.google.com/drive/folders/1MxOgWzyap13b_xxHlUqsYJqtaNRFptNu?usp=sharing" target="_blank" class="drive-link">
+                    <i class="fab fa-google-drive"></i> Acessar Pasta no Google Drive
+                </a>
+            </div>
+        </div>
+
+        <!-- Novo Card de Contas do Mês -->
+        <div class="card bills-card">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h2>Contas do Mês</h2>
+            </div>
+            <div class="bill-item">
+                <div class="bill-info">
+                    <div class="bill-name">Aluguel</div>
+                    <div class="bill-value">R$ 1.869,00</div>
+                </div>
+                <div class="bill-status status-paid">Paga</div>
+            </div>
+            <div class="bill-item">
+                <div class="bill-info">
+                    <div class="bill-name">Energia Elétrica</div>
+                    <div class="bill-value">R$ 150,00</div>
+                </div>
+                <div class="bill-status status-paid">Paga</div>
+            </div>
+            <div class="bill-item">
+                <div class="bill-info">
+                    <div class="bill-name">Água</div>
+                    <div class="bill-value">R$ 20,00</div>
+                </div>
+                <div class="bill-status status-paid">Paga</div>
+            </div>
+            <div class="bill-item">
+                <div class="bill-info">
+                    <div class="bill-name">Internet</div>
+                    <div class="bill-value">R$ 22,57</div>
+                </div>
+                <div class="bill-status status-paid">Paga</div>
+            </div>
+            <div class="bill-item">
+                <div class="bill-info">
+                    <div class="bill-name">Mercado</div>
+                    <div class="bill-value">R$ 188,00</div>
+                </div>
+                <div class="bill-status status-paid">Paga</div>
+            </div>
+        </div>
+
+        <div class="card notes-card">
+            <div class="card-header">
+                <div class="icon">
+                    <i class="fas fa-sticky-note"></i>
+                </div>
+                <h2>Avisos & Lembretes</h2>
+            </div>
+            <ul>
+                <li>Precisamos comprar os potes de marmita</li>
+                <li>Eu amo você cada dia mais e você é a mulher mais linda do mundo</li>
+                <li>Precisamos colocar telas anti-insetos nas janelas</li>
+                <li>Precisamos enviar as contas para o Quinto Andar</li>
+                <li>Precisamos ir na EDP</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        Feito com ❤️ para a pessoa mais especial do mundo
+    </div>
+
+    <script>
+        // --- IMPORTANTE: PERSONALIZE AS DATAS AQUI ---
+        const dataInicioNamoro = '2025-06-07T22:00:00'; // Formato: ANO-MÊS-DIA T HORA:MINUTO:SEGUNDO
+        const dataInicioMorandoJuntos = '2025-08-22T18:00:00';
+        // ------------------------------------------------
+
+        // Criar corações flutuantes
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const numberOfHearts = 20;
+            
+            for (let i = 0; i < numberOfHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                
+                // Posição e atraso aleatórios
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                
+                container.appendChild(heart);
+            }
+        }
+
+        function calcularTempo(dataInicial) {
+            const inicio = new Date(dataInicial);
+            const agora = new Date();
+            let diff = agora - inicio;
+
+            const anos = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            diff -= anos * (1000 * 60 * 60 * 24 * 365.25);
+            
+            const meses = Math.floor(diff / (1000 * 60 * 60 * 24 * (365.25 / 12)));
+            diff -= meses * (1000 * 60 * 60 * 24 * (365.25 / 12));
+
+            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= dias * (1000 * 60 * 60 * 24);
+
+            const horas = Math.floor(diff / (1000 * 60 * 60));
+            diff -= horas * (1000 * 60 * 60);
+
+            const minutos = Math.floor(diff / (1000 * 60));
+            diff -= minutos * (1000 * 60);
+
+            const segundos = Math.floor(diff / 1000);
+
+            return { anos, meses, dias, horas, minutos, segundos };
+        }
+
+        function formatarTempo(tempo) {
+            let display = '';
+            if (tempo.anos > 0) display += `${tempo.anos} ano${tempo.anos > 1 ? 's' : ''}, `;
+            if (tempo.meses > 0) display += `${tempo.meses} ${tempo.meses > 1 ? 'meses' : 'mês'} e `;
+            display += `${tempo.dias} dia${tempo.dias > 1 ? 's' : ''}`;
+            
+            let details = `${tempo.horas}h ${tempo.minutos}m ${tempo.segundos}s de muito amor, passeios e peidos`;
+
+            return { display, details };
+        }
+
+        function atualizarContadores() {
+            const tempoRelacionamento = calcularTempo(dataInicioNamoro);
+            const tempoMorandoJuntos = calcularTempo(dataInicioMorandoJuntos);
+
+            const formatadoRelacionamento = formatarTempo(tempoRelacionamento);
+            const formatadoMorandoJuntos = formatarTempo(tempoMorandoJuntos);
+
+            document.getElementById('relationship-display').textContent = formatadoRelacionamento.display;
+            document.getElementById('relationship-details').textContent = formatadoRelacionamento.details;
+
+            document.getElementById('living-together-display').textContent = formatadoMorandoJuntos.display;
+            document.getElementById('living-together-details').textContent = formatadoMorandoJuntos.details;
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            createHearts();
+            atualizarContadores();
+            setInterval(atualizarContadores, 1000);
+        });
+    </script>
+</body>
+</html>
